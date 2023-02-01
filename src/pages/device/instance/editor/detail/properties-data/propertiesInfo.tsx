@@ -549,7 +549,7 @@ const PropertiesInfo: React.FC<Props> = props => {
                 height={400}
                 data={gatewayData}
                 scale={{
-                  value: {},
+                  value: { min: 0 },
                   year: {
                     range: [0, 0.96],
                     type: 'timeCat'

@@ -59,7 +59,6 @@ const Save: React.FC<Props> = props => {
     if(data.name!=''&&data.id!=''&&triggers?.length>0){
       apis.scene.save({...items}).then(res => {
         if (res.status === 200) {
-          message.success('操作成功')
           props.save();
         }
       });
@@ -73,7 +72,7 @@ const Save: React.FC<Props> = props => {
       apis.scene.info(props.data.id).then(res => {
         let result = res.result;
         setData(result);
-        setParallel(result?.parallel) ;
+        setParallel(result.parallel || false);
         if (result.triggers && result.triggers.length > 0) {
           setTriggers(result.triggers)
         } else {
@@ -211,11 +210,10 @@ const Save: React.FC<Props> = props => {
               <span>执行动作</span>
               <Switch key='parallel'
                       checkedChildren="并行执行" unCheckedChildren="串行执行"
-                      checked={parallel}
+                      defaultChecked={parallel || false}
                       style={{marginLeft: 20, width: '100px'}}
                       onChange={(value: boolean) => {
                         setParallel(value)
-                        console.log(value)
                       }}
               />
             </p>

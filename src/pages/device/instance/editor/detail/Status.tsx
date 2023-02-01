@@ -27,7 +27,7 @@ const Status: React.FC<Props> = props => {
     const [properties$, setProperties$] = useState<any[]>([]);
     const [propertiesList, setPropertiesList] = useState<string[]>([]);
     const events = metadata.events
-        ?.map((item: any) => {
+        .map((item: any) => {
             item.listener = [];
             item.subscribe = (callback: Function) => {
                 item.listener.push(callback)
@@ -40,7 +40,7 @@ const Status: React.FC<Props> = props => {
             return item;
         });
     const [properties, setProperties] = useState<any[]>(metadata.properties
-        ?.map((item: any) => {
+        .map((item: any) => {
             item.listener = [];
             item.subscribe = (callback: Function) => {
                 item.listener.push(callback)
@@ -69,7 +69,7 @@ const Status: React.FC<Props> = props => {
     properties.forEach(item => propertiesMap[item.id] = item);
 
     let eventsMap = {};
-    events?.forEach((item: any) => eventsMap[item.id] = item);
+    events.forEach((item: any) => eventsMap[item.id] = item);
 
     const [index, setIndex] = useState<number>(15);
 
@@ -167,17 +167,12 @@ const Status: React.FC<Props> = props => {
                 />
               </Col>
             ))
-            if(events){
-                const eventCard = events?.map((item: any) => (
-                    <Col {...topColResponsiveProps} key={item.id}>
-                        <EventCard item={item} device={device} key={item.id} />
-                    </Col>
-                ));
-                return [...propertyCard, ...eventCard].splice(0, index)
-            }else{
-                return propertyCard.splice(0, index)
-            }
-            
+            const eventCard = events.map((item: any) => (
+                <Col {...topColResponsiveProps} key={item.id}>
+                    <EventCard item={item} device={device} key={item.id} />
+                </Col>
+            ));
+            return [...propertyCard, ...eventCard].splice(0, index)
 
         }, [device, index]);
 
@@ -198,7 +193,7 @@ const Status: React.FC<Props> = props => {
 
     useEffect(() => {
         ref.current = properties$;
-    },[])
+    })
 
     useEffect(() => {
         return () => {

@@ -102,10 +102,6 @@ const EventLog: React.FC<Props> = props => {
       encodeQueryParam({
         pageIndex: 0,
         pageSize: 10,
-        sorts: {
-          field: 'timestamp',
-          order: 'desc'
-      }
       }),
     ).then(response => {
       setLogData(response.result);

@@ -27,14 +27,7 @@ interface State {
 
 const DeviceGatewayBind: React.FC<Props> = props => {
   const initState: State = {
-    searchParam: {
-      pageSize: 10,
-      // terms: { 'parentId$not@or': props.gatewayId },
-      sorts: {
-        field: 'registryTime',
-        order: 'desc',
-      },
-    },
+    searchParam: { pageSize: 10, terms: { 'parentId$not@or': props.gatewayId } },
     deviceData: {},
     deviceId: [],
   };
@@ -56,27 +49,24 @@ const DeviceGatewayBind: React.FC<Props> = props => {
           setDeviceData(response.result);
         }
       })
-      .catch(() => { });
+      .catch(() => {});
   };
 
   useEffect(() => {
     if (props.selectionType === 'checkbox') {
-      searchParam.terms = { 'id$not': props.gatewayId };
+      searchParam.terms = { parentId$isnull: 1, 'parentId$not@or': props.gatewayId };
     }
     handleSearch(searchParam);
   }, []);
 
   const onTableChange = (pagination: PaginationConfig, filters: any, sorter: SorterResult<any>) => {
-    if (sorter.field) {
-      searchParam.sorts.order = sorter.order
-    }
     apis.deviceInstance
       .list(
         encodeQueryParam({
           terms: searchParam.terms,
           pageIndex: Number(pagination.current) - 1,
           pageSize: pagination.pageSize,
-          sorts: sorter.field ? sorter : searchParam.sorter,
+          sorts: sorter,
         }),
       )
       .then(response => {
@@ -84,7 +74,7 @@ const DeviceGatewayBind: React.FC<Props> = props => {
           setDeviceData(response.result);
         }
       })
-      .catch(() => { });
+      .catch(() => {});
   };
 
   const rowSelection = {
@@ -134,7 +124,7 @@ const DeviceGatewayBind: React.FC<Props> = props => {
 
   return (
     <Modal
-      title="选择设备"
+      title="绑定子设备"
       visible
       okText="确定"
       cancelText="取消"
@@ -153,33 +143,30 @@ const DeviceGatewayBind: React.FC<Props> = props => {
           <Search
             search={(params: any) => {
               setSearchParam(params);
-              // console.log(params)
-              // if (props.selectionType === 'checkbox') {
-              //   // params['parentId$isnull'] = 1;
-              //   handleSearch({
-              //     sorts: searchParam.sorts,
-              //     pageSize: 10,
-              //     terms: {
-              //       ...params,
-              //       terms: {
-              //         parentId$isnull: 1,
-              //         'parentId$not@or': props.gatewayId
-              //       }
-              //     },
-              //   })
-              // } else {
-              //   handleSearch({
-              //     sorts: searchParam.sorts,
-              //     pageSize: 10,
-              //     terms: {
-              //       ...params,
-              //       // parentId$isnull:1,
-              //       'parentId$not@or': props.gatewayId
-              //     },
-              //   })
-              // }
-              params['id$not'] = props.gatewayId;
-              handleSearch({ terms: params, sorter: searchParam.sorter, pageSize: 10 });
+              if (props.selectionType === 'checkbox') {
+                // params['parentId$isnull'] = 1;
+                handleSearch({
+                  sorter: searchParam.sorter, 
+                  pageSize: 10,
+                  terms:{
+                    ...params,
+                    parentId$isnull:1,
+                    'parentId$not@or':props.gatewayId
+                  },
+                })
+              }else{
+                handleSearch({
+                  sorter: searchParam.sorter, 
+                  pageSize: 10,
+                  terms:{
+                    ...params,
+                    // parentId$isnull:1,
+                    'parentId$not@or':props.gatewayId
+                  },
+                })
+              }
+              // params['parentId$not@or'] = props.gatewayId;
+              // handleSearch({ terms: params, sorter: searchParam.sorter, pageSize: 10 });
             }}
           />
         </div>

@@ -134,11 +134,6 @@ const NotificationView = () => {
         <div>
             <SearchForm
                 search={(params: any) => {
-                    handleSearch({
-                        terms: {...params},
-                        pageSize: 10,
-                        sorts: searchParam.sorts,
-                    });
                 }}
                 formItems={[{
                     label: '订阅名称',

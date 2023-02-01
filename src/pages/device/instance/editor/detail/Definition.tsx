@@ -50,27 +50,28 @@ const Definition: React.FC<Props> = props => {
     tags: props.tagsData
   });
 
-  const updateModel = async (item?: any) => {
+  const updateModel = (item?: any) => {
     const params = { ...basicInfo };
-    const obj = {
-      ...JSON.parse(item?.metadata || '{}'),
-      events: JSON.parse(params?.metadata || '{}')?.events || []
-    }
-    const response = await apis.deviceInstance.saveOrUpdateMetadata(params.id, JSON.stringify(obj));
-    if (response.status === 200) {
-      basicInfo.metadata = JSON.stringify(obj);
-      setBasicInfo(basicInfo);
-      const data = { ...obj }
-      setImportData({
-        properties: data.properties,
-        functions: data.functions,
-        events: data.events,
-        tags: data.tags
-      });
-      message.success('物模型导入成功');
-    }
-    setSpinning(false);
-    props.update()
+    // params.metadata = item.metadata;
+    apis.deviceInstance
+      .saveOrUpdateMetadata(params.id, item.metadata)
+      .then((response: any) => {
+        if (response.status === 200) {
+          basicInfo.metadata = item.metadata;
+          setBasicInfo(basicInfo);
+          let data = JSON.parse(item.metadata);
+          setImportData({
+            properties: data.properties,
+            functions: data.functions,
+            events: data.events,
+            tags: data.tags
+          });
+          message.success('物模型导入成功');
+        }
+        setSpinning(false);
+      })
+      .catch(() => {
+      }).finally(() => props.update());
   };
 
   const operations = (
@@ -82,7 +83,7 @@ const Definition: React.FC<Props> = props => {
             if (res.status === 200) {
               apis.deviceInstance.info(basicInfo.id)
                 .then((response: any) => {
-                  const data = JSON.parse(response.result.metadata);
+                  let data = JSON.parse(response.result.metadata);
                   setSpinning(false);
                   setImportData({
                     properties: data.properties,
@@ -91,10 +92,10 @@ const Definition: React.FC<Props> = props => {
                     tags: data.tags
                   });
                 })
-            }
-            message.success('重置成功！');
+              }
+              message.success('重置成功！');
           }).catch(() => {
-          }).finally(() => props.update());
+        }).finally(() => props.update());
         }}>
         <Button>重置</Button>
       </Popconfirm>
@@ -173,7 +174,6 @@ const Definition: React.FC<Props> = props => {
               setSpinning(true);
               updateModel({ metadata: item });
             }}
-            metaData={basicInfo.metadata}
           />
         )}
       </Spin>

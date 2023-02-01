@@ -244,9 +244,6 @@ const Save: React.FC<Props> = props => {
           placeholder="请选择"
           onChange={(value: string) => {
             onMessageProtocolChange(value);
-            setFieldsValue({
-              transportProtocol:''
-            })
           }}
         >
           {protocolSupports.map(e => (

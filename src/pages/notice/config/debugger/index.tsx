@@ -50,7 +50,7 @@ const Debug: React.FC<Props> = props => {
       apis.notifier
         .debugTemplate(data.id, {
           template: configList.find(i => i.id === configId),
-          context: JSON.parse(JSON.stringify(context) || '{}'),
+          context: JSON.parse(context || '{}'),
         })
         .then(res => {
           setLoading(false);

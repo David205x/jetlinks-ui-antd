@@ -69,7 +69,7 @@ const Login: React.FC<Props> = props => {
           if (icon && settings.titleIcon) {
             icon.href = settings.titleIcon;
           }
-          if (token !== 'null') {
+          if (token!=='null') {
             service.queryCurrent().subscribe((resp) => {
               if (resp.status === 200) {
                 setCurrent(true)
@@ -178,14 +178,10 @@ const Login: React.FC<Props> = props => {
 
       <div className={style.bg1} />
       <div className={style.gyl}>
-        {props.settings?.title || '物联网平台'}
+        物联网平台
         <div className={style.gy2}>MQTT TCP CoAP HTTP , 多消息协议适配 , 可视化规则引擎
         </div>
       </div>
-      {props.settings.record && <a href={'https://beian.miit.gov.cn/#/Integrated/index'} target="_blank" rel="noopener noreferrer" className={style.record}>
-        备案：{props.settings?.record}
-      </a>}
-
       {/* style={{ height: enable ? '387px' : '330px' }} */}
       <div className={style.box}>
         <div className={style.box1} >

@@ -47,12 +47,6 @@ const SqlRuleList: React.FC<Props> = props => {
   const [data, setData] = useState(initState.data);
   const [loading, setLoading] = useState(false);
 
-  const getInclude = (arr1:Array, arr2:Array)=> {
-    return arr1.filter((item) => {
-      return arr2.includes(item)
-    })
- }
-
   const handleSearch = (params?: any) => {
     setSearchParam(params);
     apis.sqlRule.list(encodeQueryParam(params))
@@ -249,9 +243,7 @@ const SqlRuleList: React.FC<Props> = props => {
                 reader.onload = (result: any) => {
                   try {
                     let data = JSON.parse(result.target.result);
-                    const type = ['modelMeta','modelType','modelVersion','name'] // 必填项
-                    const isRight = getInclude(Object.keys(data),type)                    
-                    isRight.length === 4 ? saveOrUpdate(data) : message.error('导入失败，上传的数据有误！');
+                    saveOrUpdate(data);
                   } catch (error) {
                     message.error('导入失败，请重试！');
                     setLoading(false);

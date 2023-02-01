@@ -270,7 +270,6 @@ const Save: React.FC<Props> = props => {
           showSearch
           optionFilterProp='label'
           onChange={(value: string) => {
-            props.form.setFieldsValue({'transportProtocol': ''});
             onMessageProtocolChange(value);
           }}
         >

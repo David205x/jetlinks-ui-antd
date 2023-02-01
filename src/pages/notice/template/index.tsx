@@ -77,7 +77,7 @@ const Template: React.FC<Props> = props => {
 
   const onSearch = (type?: string[], name?: string) => {
     const tempType = type || filterType;
-    const tempName = name;
+    const tempName = name || filterName;
 
     dispatch({
       type: 'noticeTemplate/query',
@@ -89,7 +89,7 @@ const Template: React.FC<Props> = props => {
         },
         terms: {
           type$IN: tempType,
-          name$LIKE: tempName,
+          name$LIKE: name === '' ? undefined : tempName,
         },
       }),
     });
@@ -219,17 +219,9 @@ const Template: React.FC<Props> = props => {
                   <Form.Item {...formItemLayout} label="配置名称">
                     <Input
                       onChange={e => {
-                        // console.log(e.target.value)
-                        if(e.target.value){
-                          setFilterName(e.target.value);
-                          onSearch(undefined, e.target.value);
-                        }else{
-                          setFilterName('');
-                          onSearch(undefined, '');    
-                        }
-                        // const tempValue = e.target.value;
-                        // setFilterName(tempValue);
-                        // onSearch(undefined, tempValue === '' ? undefined : tempValue);
+                        const tempValue = e.target.value;
+                        setFilterName(tempValue);
+                        onSearch(undefined, tempValue === '' ? undefined : tempValue);
                       }}
                     />
                   </Form.Item>

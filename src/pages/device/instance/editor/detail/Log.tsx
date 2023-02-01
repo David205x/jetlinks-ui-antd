@@ -164,11 +164,7 @@ const Log: React.FC<Props> = props => {
               <Col md={8} sm={24}>
                 <Form.Item label="日志类型">
                   {getFieldDecorator('type$IN')(
-                    <Select mode="multiple"   
-                    optionFilterProp='label'
-                    filterOption={(input, option:any) =>
-                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
+                    <Select mode="multiple">
                       {logType.map(item => (
                         <Select.Option key={item.id} value={item.id}>
                           {item.name}

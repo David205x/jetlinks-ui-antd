@@ -40,7 +40,6 @@ const Trigger: React.FC<Props> = props => {
   const [filters, setFilters] = useState(initState.filters);
   const [dataSource, setDataSource] = useState(initState.dataSource);
   const [trigger, setTrigger] = useState(initState.trigger);
-  const [operator, setOperator] = useState<any>()
 
   useEffect(() => {
     setTriggerType(trigger.trigger);
@@ -166,7 +165,7 @@ const Trigger: React.FC<Props> = props => {
       case 'properties':
         return (
           <Col span={6} style={{ paddingBottom: 10, paddingLeft: 3, paddingRight: 9 }}>
-            <Select placeholder="物模型属性" value={trigger.modelId}
+            <Select placeholder="物模型属性" defaultValue={trigger.modelId}
               onChange={(value: string, data: any) => {
                 setDataSourceValue('properties', data.props.data, value);
                 trigger.modelId = value;
@@ -245,14 +244,6 @@ const Trigger: React.FC<Props> = props => {
               <Col span={6} style={{ paddingBottom: 10, paddingLeft: -1, paddingRight: 12 }}>
                 <Select placeholder="选择类型，如：属性/事件" defaultValue={trigger.type}
                   onChange={(value: string) => {
-                    if (value) {
-                      trigger.modelId = undefined;
-                      setFilters([]);
-                      setTimeout(() => {
-                        setFilters([{ _id: Math.round(Math.random() * 100000) }]);
-                      }, 300);
-                      setOperator(undefined)
-                    }
                     setMessageType(() => value);
                     trigger.type = value;
                     setTrigger(trigger);
@@ -279,7 +270,7 @@ const Trigger: React.FC<Props> = props => {
                   <Col span={6} style={{ paddingLeft: -1, paddingRight: 12, paddingBottom: 10 }}>
                     <AutoComplete dataSource={dataSource} placeholder="过滤条件KEY" children={item.key}
                       defaultValue={item.key}
-                      onChange={value => {
+                      onBlur={value => {
                         filters[index].key = value;
                         trigger.filters = filters;
                         setTrigger(trigger);
@@ -297,9 +288,8 @@ const Trigger: React.FC<Props> = props => {
                     />
                   </Col>
                   <Col span={6} style={{ paddingLeft: 3, paddingRight: 9, paddingBottom: 10 }}>
-                    <Select placeholder="操作符" value={item.operator || operator}
+                    <Select placeholder="操作符" defaultValue={item.operator}
                       onChange={(value: string) => {
-                        setOperator(value)
                         filters[index].operator = value;
                         trigger.filters = filters;
                         setTrigger(trigger);
@@ -368,14 +358,6 @@ const Trigger: React.FC<Props> = props => {
               <Col span={6} style={{ paddingBottom: 10, paddingLeft: -1, paddingRight: 12 }}>
                 <Select placeholder="选择类型，如：属性/事件" defaultValue={trigger.type}
                   onChange={(value: string) => {
-                    if (value) {
-                      trigger.modelId = undefined;
-                      setFilters([]);
-                      setTimeout(() => {
-                        setFilters([{ _id: Math.round(Math.random() * 100000) }]);
-                      }, 300);
-                      setOperator(undefined)
-                    }
                     setMessageType(() => value);
                     trigger.type = value;
                     setTrigger(trigger);
@@ -567,7 +549,7 @@ const Trigger: React.FC<Props> = props => {
               onChange={(value: string) => {
                 setTriggerType(() => value);
                 setTrigger({
-                  trigger: value
+                  trigger :value
                 });
                 setFilters([{}])
                 submitData();

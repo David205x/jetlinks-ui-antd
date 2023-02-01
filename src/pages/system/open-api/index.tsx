@@ -58,27 +58,18 @@ const OpenApiList: React.FC<Props> = props => {
     {
       title: '用户名',
       dataIndex: 'username',
-      ellipsis: {
-        showTitle: false,
-      },
     },
     {
       title: '状态',
-      width: 80,
       dataIndex: 'status',
       render: text => <Tag color={text.value === 1 ? '#108ee9' : '#f50'}>{text.text}</Tag>,
     },
     {
       title: '说明',
-      width: 500,
       dataIndex: 'description',
-      ellipsis: {
-        showTitle: false,
-      },
     },
     {
       title: '操作',
-      width: 200,
       render: (text, record) => (
         <Fragment>
           <a
@@ -135,7 +126,6 @@ const OpenApiList: React.FC<Props> = props => {
   ];
 
   const handleSearch = (params?: any) => {
-    setSearchParam(params)
     dispatch({
       type: 'openApi/query',
       payload: encodeQueryParam(params),
@@ -227,7 +217,7 @@ const OpenApiList: React.FC<Props> = props => {
                 type: 'string',
               },
               {
-                label: "clientId",
+                label: "标识",
                 key: "id$LIKE",
                 type: 'string'
               }]}
